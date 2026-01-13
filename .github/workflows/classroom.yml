@@ -1,0 +1,136 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Q02_44 Test
+      id: q02_44-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_44 Test
+        setup-command: javac Q02_44/Squares.java
+        command: java -cp Q02_44 Squares
+        input: ''
+        expected-output: |-
+          The square of 1 is 1
+          The square of 2 is 4
+          The square of 3 is 9
+          The square of 4 is 16
+          The square of 5 is 25
+          The square of 6 is 36
+          The square of 7 is 49
+          The square of 8 is 64
+          The square of 9 is 81
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_45 Test
+      id: q02_45-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_45 Test
+        setup-command: javac Q02_45/Average.java
+        command: java -cp Q02_45 Average
+        input: ''
+        expected-output: The average of 1, 7, 9, and 34 is 12.75
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_46 Test
+      id: q02_46-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_46 Test
+        setup-command: javac Q02_46/FourStars.java
+        command: java -cp Q02_46 FourStars
+        input: ''
+        expected-output: "* * * *"
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_47 Test
+      id: q02_47-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_47 Test
+        setup-command: javac Q02_47/LetterX.java
+        command: java -cp Q02_47 LetterX
+        input: ''
+        expected-output: |-
+          *   *
+           * *
+            *
+           * *
+          *   *
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_48 Test
+      id: q02_48-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_48 Test
+        setup-command: javac Q02_48/LetterX.java
+        command: java -cp Q02_48 LetterX
+        input: ''
+        expected-output: |-
+          *   *
+           * *
+            *
+           * *
+          *   *
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_49 Test
+      id: q02_49-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_49 Test
+        setup-command: javac Q02_49/WeightConversion.java
+        command: java -cp Q02_49 WeightConversion
+        input: ''
+        expected-output: |-
+          10 kgs = 22.026431718061673 lbs.
+          50 kgs = 110.13215859030836 lbs.
+          100 kgs = 220.26431718061673 lbs.
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Q02_50 Test
+      id: q02_50-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q02_50 Test
+        setup-command: javac Q02_50/LengthConversion.java
+        command: java -cp Q02_50 LengthConversion
+        input: ''
+        expected-output: |-
+          2 inches = 50.8 mms.
+          5 inches = 127.0 mms.
+          10 inches = 254.0 mms.
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        Q02_44-TEST_RESULTS: "${{steps.q02_44-test.outputs.result}}"
+        Q02_45-TEST_RESULTS: "${{steps.q02_45-test.outputs.result}}"
+        Q02_46-TEST_RESULTS: "${{steps.q02_46-test.outputs.result}}"
+        Q02_47-TEST_RESULTS: "${{steps.q02_47-test.outputs.result}}"
+        Q02_48-TEST_RESULTS: "${{steps.q02_48-test.outputs.result}}"
+        Q02_49-TEST_RESULTS: "${{steps.q02_49-test.outputs.result}}"
+        Q02_50-TEST_RESULTS: "${{steps.q02_50-test.outputs.result}}"
+      with:
+        runners: q02_44-test,q02_45-test,q02_46-test,q02_47-test,q02_48-test,q02_49-test,q02_50-test
